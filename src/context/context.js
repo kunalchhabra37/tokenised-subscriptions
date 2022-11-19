@@ -1,9 +1,25 @@
 import { createContext, useEffect, useState } from "react";
 export const TokenContext = createContext();
-
+const BN = require("bn.js");
+const {
+  Metaplex,
+  keypairIdentity,
+  bundlrStorage,
+} = require("@metaplex-foundation/js");
+const {
+  Connection,
+  clusterApiUrl,
+  Keypair,
+  PublicKey,
+  
+} = require("@solana/web3.js");
 export const TokenProvider = ({ children }) => {  
-    const [walletAddress, setWalletAddress] = useState(null);
 
+    
+    const [walletAddress, setWalletAddress] = useState(null);
+    const [nftMintAddress, setNftMintAddress] = useState(null);
+
+    
     const checkIfWalletIsConnected = async () => {
         try {
           const { solana } = window;
@@ -47,13 +63,39 @@ export const TokenProvider = ({ children }) => {
             // disconnectWallet()
         }
       };
+
+      const uploadNFT = async () => {
+
+        const connection = new Connection(clusterApiUrl("devnet"));
+        const metaplex = Metaplex.make(connection)
+        let date = new Date(Date.now());
+        date.setDate(date.getDate() + 30);
+        const { uri } = await metaplex.nfts().uploadMetadata({
+          name: "Subscription NFT Metadata",
+          validity: date,
+        });
+      
+        const { nft } = await metaplex.nfts().create({
+          name: "Subscription NFT",
+          isMutable: true,
+          sellerFeeBasisPoints: 2000,
+          uri: uri,
+        });
+        setNftMintAddress(nft.mint.address.toBase58());
+        console.log(nft.mint.address.toBase58());
+      };
+
     return (
     
     <TokenContext.Provider
       value={{
         connectWallet,
         disconnectWallet,
-        walletAddress
+        walletAddress, 
+        uploadNFT,
+        setNftMintAddress,
+        nftMintAddress,
+
       }}
     >
       {children}
