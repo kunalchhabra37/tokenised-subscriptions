@@ -1,29 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-import Layout from './Components/Layout/Layout';
-import Buy from "./pages/Buy/Buy"
-import CardContainer from './Components/Cards/CardContainer';
+import "./App.css";
+import Layout from "./Components/Layout/Layout";
+import Router from "./routes/Router";
+import { Link } from "react-router-dom";
 
 function App() {
-	return (
-		<div>
-			<Layout />
-			<div className="main-content">
-				<button type="button" class="conn-wlt btn btn-primary float-right">
-					Buy NFT
-				</button>
-				<button type="button" class="conn-wlt btn btn-primary float-right">
-					Check Status
-				</button>
-				<button type="button" class="conn-wlt btn btn-primary float-right">
-					Renew Subsciption
-				</button>
-			</div>
-			<CardContainer />
-      
-      <Buy />
-		</div>
-	);
+  return (
+    <div>
+      <Layout />
+      <div className="main-content">
+        <a href="/buy" className="conn-wlt btn btn-primary float-right">
+          Buy NFT
+        </a>
+        <a
+          href="/"
+          type="button"
+          className="conn-wlt btn btn-primary float-right"
+        >
+          Check Status
+        </a>
+        <a
+          href="/renew"
+          type="button"
+          className="conn-wlt btn btn-primary float-right"
+        >
+          Renew Subsciption
+        </a>
+      </div>
+      <Router />
+    </div>
+  );
 }
 
 export default App;
