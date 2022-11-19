@@ -18,7 +18,7 @@ export const TokenProvider = ({ children }) => {
     
     const [walletAddress, setWalletAddress] = useState(null);
     const [nftMintAddress, setNftMintAddress] = useState(null);
-
+    const [subscriptionStatus, setSubscriptionStatus] = useState(null);
     
     const checkIfWalletIsConnected = async () => {
         try {
@@ -68,8 +68,10 @@ export const TokenProvider = ({ children }) => {
 
         const connection = new Connection(clusterApiUrl("devnet"));
         const metaplex = Metaplex.make(connection)
+
         let date = new Date(Date.now());
         date.setDate(date.getDate() + 30);
+        
         const { uri } = await metaplex.nfts().uploadMetadata({
           name: "Subscription NFT Metadata",
           validity: date,
@@ -81,9 +83,55 @@ export const TokenProvider = ({ children }) => {
           sellerFeeBasisPoints: 2000,
           uri: uri,
         });
+
         setNftMintAddress(nft.mint.address.toBase58());
-        console.log(nft.mint.address.toBase58());
       };
+
+      const update = async () => {
+        const connection = new Connection(clusterApiUrl("devnet"));
+        const metaplex = Metaplex.make(connection)
+
+        const mintAddress = new PublicKey("HWuS36hZAgp3Rc2zxZrevMJs4wj7owDS3i4QNuuSQVca"); // To be changed later to fetch nft from wallet
+        const nft = await metaplex.nfts().findByMint({ mintAddress });
+
+        setNftMintAddress(nft.mint.address.toBase58());
+
+        let date = new Date(Date.now());
+        date.setDate(date.getDate() + 30);
+
+        const { uri } = await metaplex.nfts().uploadMetadata({
+          ...nft.json,
+          validity: date,
+      });
+      
+      await metaplex.nfts().update({ 
+          nftOrSft: nft,
+          uri: uri
+      });
+      }
+
+      const checkValidity = async () => {
+        const connection = new Connection(clusterApiUrl("devnet"));
+        const metaplex = Metaplex.make(connection)
+
+        const mintAddress = new PublicKey("HWuS36hZAgp3Rc2zxZrevMJs4wj7owDS3i4QNuuSQVca");
+        const nft = await metaplex.nfts().findByMint({ mintAddress });
+
+        setNftMintAddress(nft.mint.address.toBase58());
+
+        let validity = new Date(nft.json.validity);
+        if (validity > new Date(Date.now())) {
+          setSubscriptionStatus({
+            valid: true,
+            validity: validity
+          })
+        }else {
+            setSubscriptionStatus({
+                valid: false,
+                validity: validity
+              })
+        }
+      }
 
     return (
     
@@ -93,9 +141,10 @@ export const TokenProvider = ({ children }) => {
         disconnectWallet,
         walletAddress, 
         uploadNFT,
-        setNftMintAddress,
         nftMintAddress,
-
+        update,
+        subscriptionStatus,
+        checkValidity
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   MDBBtn,
   MDBContainer,
@@ -9,8 +9,14 @@ import {
   MDBCol,
   MDBInput,
 } from "mdb-react-ui-kit";
+import { TokenContext } from "../../context/context";
 
 function Buy() {
+
+  const {
+        uploadNFT,
+        nftMintAddress
+  } = useContext(TokenContext)
   return (
     <MDBContainer fluid>
       <MDBRow className="d-flex justify-content-center align-items-center">

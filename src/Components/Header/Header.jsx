@@ -1,6 +1,5 @@
 import "./Header.css";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { TokenContext } from "../../context/context";
 
 const Header = () => {
