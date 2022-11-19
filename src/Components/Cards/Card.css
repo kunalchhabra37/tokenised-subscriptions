@@ -1,0 +1,16 @@
+.card {
+  max-width: 500px;
+  min-width: 300px;
+}
+
+.card img {
+  opacity: .2;
+  height: 200px;
+}
+.card-img-overlay
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
