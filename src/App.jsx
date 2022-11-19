@@ -13,7 +13,7 @@ function App() {
           Buy NFT
         </a>
         <a
-          href="/"
+          href="/fetch"
           type="button"
           className="conn-wlt btn btn-primary float-right"
         >

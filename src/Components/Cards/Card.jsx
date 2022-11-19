@@ -3,7 +3,7 @@ import "./Card.css";
 
 const Card = ({ title, para, target, url, value }) => {
   return (
-    <div className="card text-bg-dark overflow-hidden text-center m-auto">
+    <div className="card text-bg-dark overflow-hidden text-center m-auto mb-5">
       <img src={url} className="card-img" alt="..." />
       <div className="card-img-overlay">
         <h5 className="card-title">{title}</h5>
