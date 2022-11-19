@@ -8,6 +8,7 @@ import React from "react";
 import Home from "../pages/Home/Home";
 import Buy from "../pages/Buy/Buy";
 import Renew from "../pages/Renew/Renew";
+import Fetch from "../pages/Fetch/Fetch";
 
 const Router = () => {
   const router = createBrowserRouter(
@@ -16,6 +17,7 @@ const Router = () => {
         <Route element={<Home />} path="" />
         <Route element={<Buy />} path="buy" />
         <Route element={<Renew />} path="renew" />
+        <Route element={<Fetch />} path="fetch" />
       </Route>
     )
   );
